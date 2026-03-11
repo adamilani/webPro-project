@@ -10,7 +10,7 @@ describe('Home Page', () => {
   
 beforeAll(async () => {
   browser = await puppeteer.launch({
-    headless: "new", // חובה לגרסאות חדשות של פאפטיר ב-CI
+    headless: "new", 
     args: [
       '--no-sandbox', 
       '--disable-setuid-sandbox',

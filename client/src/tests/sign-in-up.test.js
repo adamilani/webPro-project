@@ -8,11 +8,11 @@ describe('Sign In / Sign Up Page', () => {
   
 beforeAll(async () => {
   browser = await puppeteer.launch({
-    headless: "new", // הגדרה מומלצת לגרסאות חדשות
+    headless: "new", 
     args: [
       '--no-sandbox', 
       '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage' // עוזר למנוע קריסות בזיכרון של השרת
+      '--disable-dev-shm-usage' 
     ]
   });
   page = await browser.newPage();
