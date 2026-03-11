@@ -17,15 +17,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          # הסרנו את שורות ה-cache כדי למנוע את השגיאה
+          # הסרנו את ה-cache לחלוטין כדי למנוע את השגיאה האדומה שקיבלת
 
       - name: Install dependencies
         run: |
-          # אם התיקייה client נמצאת ישר בשורש הריפו, השתמש בזה:
-          cd webPro-main/client || cd client
+          # פקודה חכמה שמוצאת איפה נמצא ה-package.json של ה-client ונכנסת לשם
+          TARGET_DIR=$(find . -name "package.json" -path "*/client/*" -exec dirname {} \;)
+          echo "Moving to $TARGET_DIR"
+          cd "$TARGET_DIR"
           npm install
 
       - name: Run Puppeteer tests
         run: |
-          cd webPro-main/client || cd client
+          TARGET_DIR=$(find . -name "package.json" -path "*/client/*" -exec dirname {} \;)
+          cd "$TARGET_DIR"
           npm test
