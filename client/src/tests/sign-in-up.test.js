@@ -6,11 +6,18 @@ describe('Sign In / Sign Up Page', () => {
   let page;
   const signInUpPath = 'file://' + path.resolve(__dirname, 'C:\\Users\\user\\OneDrive\\שולחן העבודה\\FULL STACK\\webPro-main\\webPro-main\\client\\src\\sign-in-up\\sign-in-up.html');
   
-  beforeAll(async () => {
-    browser = await puppeteer.launch({ headless: true });
-    page = await browser.newPage();
-    await page.goto(signInUpPath);
+beforeAll(async () => {
+  browser = await puppeteer.launch({
+    headless: "new", // הגדרה מומלצת לגרסאות חדשות
+    args: [
+      '--no-sandbox', 
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage' // עוזר למנוע קריסות בזיכרון של השרת
+    ]
   });
+  page = await browser.newPage();
+  await page.goto(signInUpPath);
+});
 
   afterAll(async () => {
     await browser.close();

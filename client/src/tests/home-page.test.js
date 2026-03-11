@@ -6,12 +6,20 @@ describe('Home Page', () => {
   let page;
   const homePagePath = 'file://' + path.resolve(__dirname, 'C:\\Users\\user\\OneDrive\\שולחן העבודה\\FULL STACK\\webPro-main\\webPro-main\\client\\src\\home-page\\home-page.html');
 
-  beforeAll(async () => {
-    browser = await puppeteer.launch({ headless: true });
-    page = await browser.newPage();
-    await page.goto(homePagePath);
+  
+  
+beforeAll(async () => {
+  browser = await puppeteer.launch({
+    headless: "new", // חובה לגרסאות חדשות של פאפטיר ב-CI
+    args: [
+      '--no-sandbox', 
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage'
+    ]
   });
-
+  page = await browser.newPage();
+  await page.goto(homePagePath);
+});
   afterAll(async () => {
     await browser.close();
   });
