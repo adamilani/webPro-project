@@ -1,16 +1,14 @@
-name: CI-Tests
-on: [push]
-
-jobs:
-  run-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install and Test
+      - name: Install dependencies
         run: |
-          # אנחנו נכנסים ישירות לתיקיית ה-client
-          # אם התיקייה נמצאת בתוך webPro-main, הוסף אותה לנתיב
-          cd client || cd webPro-main/client || cd webPro-main/webPro-main/client
+          TARGET_DIR=$(find . -maxdepth 3 -name "package.json" -path "*/client/package.json" -print -quit)
+          TARGET_DIR=$(dirname "$TARGET_DIR")
+          echo "Moving to $TARGET_DIR"
+          cd "$TARGET_DIR"
           npm install
+
+      - name: Run Puppeteer tests
+        run: |
+          TARGET_DIR=$(find . -maxdepth 3 -name "package.json" -path "*/client/package.json" -print -quit)
+          TARGET_DIR=$(dirname "$TARGET_DIR")
+          cd "$TARGET_DIR"
           npm test
