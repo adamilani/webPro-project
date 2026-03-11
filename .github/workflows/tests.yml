@@ -6,8 +6,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Install and Test
         run: |
-          cd webPro-main/webPro-main/client
+          # אנחנו נכנסים ישירות לתיקיית ה-client
+          # אם התיקייה נמצאת בתוך webPro-main, הוסף אותה לנתיב
+          cd client || cd webPro-main/client || cd webPro-main/webPro-main/client
           npm install
           npm test
