@@ -1,0 +1,38 @@
+name: CI-Tests
+# מתי להריץ את הבדיקות? בכל פעם שעושים Push או Pull Request לענף הראשי
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  run-tests:
+    # על איזו מערכת הפעלה להריץ את הבדיקות? (לינוקס הכי נפוץ ומהיר)
+    runs-on: ubuntu-latest
+
+    steps:
+      # שלב 1: העתקת הקוד מהריפוזיטורי למכונה הווירטואלית
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # שלב 2: התקנת Node.js במכונה
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          # וודא שהנתיב ל-package-lock.json תואם למבנה שלך (לפי התמונה: webPro-main/client)
+          cache-dependency-path: webPro-main/client/package-lock.json
+
+      # שלב 3: התקנת הספריות (כמו puppeteer ו-jest)
+      - name: Install dependencies
+        run: |
+          cd webPro-main/client
+          npm install
+
+      # שלב 4: הרצת הבדיקות האוטומטיות
+      - name: Run Puppeteer tests
+        run: |
+          cd webPro-main/client
+          npm test
