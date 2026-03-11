@@ -6,8 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Install and Test
         run: |
-          cd $(find . -name "package.json" -path "*/client/*" -exec dirname {} \;)
+          # כניסה ישירה לנתיב שראינו בלוגים שלך
+          cd webPro-main/webPro-main/client
           npm install
           npm test
