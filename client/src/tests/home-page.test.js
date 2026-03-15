@@ -4,8 +4,7 @@ const path = require('path');
 describe('Home Page', () => {
   let browser;
   let page;
-  const homePagePath = 'file://' + path.resolve(__dirname, 'C:\\Users\\user\\OneDrive\\שולחן העבודה\\FULL STACK\\webPro-main\\webPro-main\\client\\src\\home-page\\home-page.html');
-
+const homePagePath = `file://${path.resolve(__dirname, '../home-page/home-page.html')}`;
   
   
 beforeAll(async () => {
