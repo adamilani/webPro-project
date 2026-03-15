@@ -1,14 +1,14 @@
-      - name: Install dependencies
-        run: |
-          TARGET_DIR=$(find . -maxdepth 3 -name "package.json" -path "*/client/package.json" -print -quit)
-          TARGET_DIR=$(dirname "$TARGET_DIR")
-          echo "Moving to $TARGET_DIR"
-          cd "$TARGET_DIR"
-          npm install
+name: CI-Tests
+on: [push]
 
-      - name: Run Puppeteer tests
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install and Test
         run: |
-          TARGET_DIR=$(find . -maxdepth 3 -name "package.json" -path "*/client/package.json" -print -quit)
-          TARGET_DIR=$(dirname "$TARGET_DIR")
-          cd "$TARGET_DIR"
+          # נכנסים ישירות לתיקייה, בלי חיפושים
+          cd client || cd webPro-main/client || cd webPro-main/webPro-main/client
+          npm install
           npm test
