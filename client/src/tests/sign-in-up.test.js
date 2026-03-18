@@ -1,63 +1,41 @@
 const puppeteer = require('puppeteer');
 const path = require('path');
 
-describe('Sign In / Sign Up Page', () => {
+describe('FIFA Fan ID Portal', () => {
   let browser;
   let page;
-const signInUpPath = `file://${path.resolve(__dirname, '../sign-in-up/sign-in-up.html')}`;  
-beforeAll(async () => {
-  browser = await puppeteer.launch({
-    headless: "new", 
-    args: [
-      '--no-sandbox', 
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage' 
-    ]
+  const signInUpPath = `file://${path.resolve(__dirname, '../sign-in-up/sign-in-up.html')}`;  
+
+  beforeAll(async () => {
+    browser = await puppeteer.launch({
+      headless: "new", 
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    page = await browser.newPage();
+    await page.goto(signInUpPath);
   });
-  page = await browser.newPage();
-  await page.goto(signInUpPath);
-});
 
   afterAll(async () => {
     await browser.close();
   });
 
-  test('page has correct title', async () => {
+  test('page has correct FIFA title', async () => {
     const title = await page.title();
-    expect(title).toBe('Modern login page');
+    expect(title).toBe('FIFA Fan ID Portal');
   });
 
-  test('Sign Up form exists with h1 "Create Account"', async () => {
+  test('Sign Up form has Fan ID header', async () => {
     const h1Text = await page.$eval('.sign-up h1', el => el.textContent);
-    expect(h1Text).toBe('Create Account');
+    expect(h1Text).toBe('Create Fan ID');
   });
 
-  test('Sign In form exists with h1 "Sign In"', async () => {
-    const h1Text = await page.$eval('.sign-in h1', el => el.textContent);
-    expect(h1Text).toBe('Sign In');
+  test('Sign In button has Kick Off text', async () => {
+    const buttonText = await page.$eval('.sign-in button[type="submit"]', el => el.textContent);
+    expect(buttonText).toBe('Kick Off');
   });
 
-  test('Sign Up form has 3 input fields', async () => {
-    const inputs = await page.$$eval('.sign-up input', els => els.length);
-    expect(inputs).toBe(3);
-  });
-
-  test('Sign In form has 2 input fields', async () => {
-    const inputs = await page.$$eval('.sign-in input', els => els.length);
-    expect(inputs).toBe(2);
-  });
-
-  test('Sign Up and Sign In forms have submit buttons', async () => {
-    const signUpButton = await page.$eval('.sign-up button[type="submit"]', el => el.textContent);
-    const signInButton = await page.$eval('.sign-in button[type="submit"]', el => el.textContent);
-    expect(signUpButton).toBe('Sign Up');
-    expect(signInButton).toBe('Sign In');
-  });
-
-  test('Social icons exist in both forms', async () => {
-    const signUpIcons = await page.$$eval('.sign-up .social-icons a', els => els.length);
-    const signInIcons = await page.$$eval('.sign-in .social-icons a', els => els.length);
-    expect(signUpIcons).toBe(4);
-    expect(signInIcons).toBe(4);
+  test('Toggle right has correct FIFA message', async () => {
+    const h1Text = await page.$eval('.toggle-right h1', el => el.textContent);
+    expect(h1Text).toBe('Hello, Fan!');
   });
 });

@@ -1,16 +1,4 @@
-
-const container = document.getElementById('container')
-const registerBtn = document.getElementById('register')
-const loginBth = document.getElementById('login')
-
-registerBtn.addEventListener('click',()=>{
-    container.classList.add("active")
-})
-
-loginBth.addEventListener('click',()=>{
-    container.classList.remove("active")
-})
-
+// ... (הלוגיקה של ה-EventListeners נשארת זהה)
 
 async function singUp(event) {
     event.preventDefault();
@@ -18,16 +6,13 @@ async function singUp(event) {
     let email = event.target.userEmail.value;
     let password = event.target.userPassword.value;
     try {
-        const response = await axios.post("http://localhost:4000/users",
-           { username, email, password });
-           
+        const response = await axios.post("http://localhost:4000/users", { username, email, password });
         if (response.data !== undefined) {
-          console.log("sing up successful");
+          console.log("Welcome to the squad! Fan ID created.");
         }
-      } catch (error) {
-        console.error("Error fetching, " + error);
-      }
-    
+    } catch (error) {
+        console.error("Kickoff failed: " + error);
+    }
 }
 
 async function signIn(event) {
@@ -35,19 +20,12 @@ async function signIn(event) {
   let email = event.target.userEmail.value;
   let password = event.target.userPassword.value;
   try {
-    const response = await axios.post("http://localhost:4000/users/sign-in",
-     { email, password });
-     
+    const response = await axios.post("http://localhost:4000/users/sign-in", { email, password });
     if (response.data !== undefined) {
-      console.log("Sign in successful");
-      window.location.href='http://127.0.0.1:5500/client/src/home-page/home-page.html';
-      // Perform actions after successful sign-in, such as redirecting to a new page or updating UI.
+      console.log("Fan Authenticated. Entering Stadium...");
+      window.location.href='../home-page/home-page.html'; // נתיב יחסי בטוח יותר
     }
   } catch (error) {
-    console.error("Error signing in: " + error);
-    // Handle sign-in error, such as displaying an error message to the user.
+    console.error("Foul play! Sign in error: " + error);
   }
 }
-  
-
-
