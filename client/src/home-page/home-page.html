@@ -24,6 +24,17 @@
         <p>Kickoff In: <span id="days-count">--</span> Days</p>
     </div>
 
+    <div id="sort-options">
+        <label>
+            Filter Tickets:
+            <select id="sort-select">
+                <option value="name">By Venue</option>
+                <option value="category">By Phase</option>
+                <option value="price">By Price</option>
+            </select>
+        </label>
+    </div>
+
     <section>
         <h2>Official Ticket Packages</h2>
         <div id="data-container" class="card-container">
@@ -32,6 +43,13 @@
 
     <div id="cart">
         <button id="cart-button">View My Tickets</button>
+    </div>
+
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="product-details" class="product-details-container"></div>
+        </div>
     </div>
 
     <footer>

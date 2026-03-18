@@ -4,7 +4,6 @@ const path = require('path');
 describe('Home Page - World Cup Edition', () => {
   let browser;
   let page;
-  // וודא שהנתיב הזה נכון ב-GitHub Action שלך
   const homePagePath = `file://${path.resolve(__dirname, '../home-page/home-page.html')}`;
   
   beforeAll(async () => {
@@ -25,19 +24,23 @@ describe('Home Page - World Cup Edition', () => {
     expect(title).toBe('FIFA World Cup 2026'); 
   });
 
-  test('header contains FIFA WORLD CUP text', async () => {
+  test('header contains World Cup text', async () => {
     const h1Text = await page.$eval('header h1', el => el.textContent);
     expect(h1Text).toContain('FIFA WORLD CUP 2026');
   });
 
-  test('navigation links are updated', async () => {
+  test('navigation links are correct', async () => {
     const links = await page.$$eval('nav a', els => els.map(el => el.textContent));
-    expect(links).toContain('Match Schedule');
-    expect(links).toContain('Tickets');
+    expect(links).toEqual(['Match Schedule', 'Host Cities', 'Tickets']);
   });
 
-  test('countdown element exists', async () => {
-    const countdownExists = await page.$('#countdown-container');
-    expect(countdownExists).not.toBeNull();
+  test('countdown exists', async () => {
+    const countdownText = await page.$eval('#countdown-container', el => el.textContent);
+    expect(countdownText).toContain('Kickoff In:');
+  });
+
+  test('ticket button text updated', async () => {
+    const buttonText = await page.$eval('#cart-button', el => el.textContent);
+    expect(buttonText).toBe('View My Tickets');
   });
 });
