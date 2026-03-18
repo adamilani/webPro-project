@@ -1,55 +1,43 @@
 const puppeteer = require('puppeteer');
 const path = require('path');
 
-describe('Home Page', () => {
+describe('Home Page - World Cup Edition', () => {
   let browser;
   let page;
-const homePagePath = `file://${path.resolve(__dirname, '../home-page/home-page.html')}`;
+  // וודא שהנתיב הזה נכון ב-GitHub Action שלך
+  const homePagePath = `file://${path.resolve(__dirname, '../home-page/home-page.html')}`;
   
-  
-beforeAll(async () => {
-  browser = await puppeteer.launch({
-    headless: "new", 
-    args: [
-      '--no-sandbox', 
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage'
-    ]
+  beforeAll(async () => {
+    browser = await puppeteer.launch({
+      headless: "new", 
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    page = await browser.newPage();
+    await page.goto(homePagePath);
   });
-  page = await browser.newPage();
-  await page.goto(homePagePath);
-});
+
   afterAll(async () => {
     await browser.close();
   });
 
-  test('page has correct title', async () => {
+  test('page has correct FIFA title', async () => {
     const title = await page.title();
-    expect(title).toBe('Home Page'); 
+    expect(title).toBe('FIFA World Cup 2026'); 
   });
 
-  test('header contains correct h1', async () => {
+  test('header contains FIFA WORLD CUP text', async () => {
     const h1Text = await page.$eval('header h1', el => el.textContent);
-    expect(h1Text).toBe('you are welcome !!!');
+    expect(h1Text).toContain('FIFA WORLD CUP 2026');
   });
 
-  test('navigation contains 3 links', async () => {
+  test('navigation links are updated', async () => {
     const links = await page.$$eval('nav a', els => els.map(el => el.textContent));
-    expect(links).toEqual(['main', 'catalog', 'contacts']);
+    expect(links).toContain('Match Schedule');
+    expect(links).toContain('Tickets');
   });
 
-  test('sort select exists with 3 options', async () => {
-    const options = await page.$$eval('#sort-select option', els => els.map(el => el.value));
-    expect(options).toEqual(['name', 'category', 'price']);
-  });
-
-  test('cart button exists', async () => {
-    const buttonText = await page.$eval('#cart-button', el => el.textContent);
-    expect(buttonText).toBe('go to cart');
-  });
-
-  test('section contains h2 "sale!"', async () => {
-    const h2Text = await page.$eval('section h2', el => el.textContent);
-    expect(h2Text).toBe('sale!');
+  test('countdown element exists', async () => {
+    const countdownExists = await page.$('#countdown-container');
+    expect(countdownExists).not.toBeNull();
   });
 });
